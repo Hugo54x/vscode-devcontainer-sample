@@ -1,0 +1,137 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Check Current File for Black Codestyle Errors",
+            "type": "shell",
+            "command": "${config:python.formatting.blackPath}",
+            "args": [
+                "--check",
+                "${file}"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Format Notebook to Black Codestyle",
+            "type": "shell",
+            "command": "${config:python.formatting.blackPath}",
+            "args": [
+                "${file}"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Update Application",
+            "type": "shell",
+            "command": "sudo ${workspaceFolderBasename}/scripts/update_complete_project.sh",
+            "windows": {
+                "command": ".\\scripts\\update_complete_project.ps1"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Generate Docs: Setup Docs",
+            "type": "shell",
+            "command": "docker run -it --rm -v ${LOCAL_WORKSPACE_FOLDER}/docs:/docs sphinxdoc/sphinx sphinx-quickstart && sudo chown -R vscode ${LOCAL_WORKSPACE_FOLDER}/docs/",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Generate Docs: Generate HTML",
+            "type": "shell",
+            "command": "docker run --rm -v ${LOCAL_WORKSPACE_FOLDER}/docs:/docs sphinxdoc/sphinx make html",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Generate Docs: Generate PDF",
+            "type": "shell",
+            "command": "docker run --rm -v ${LOCAL_WORKSPACE_FOLDER}/docs:/docs sphinxdoc/sphinx-latexpdf make latexpdf",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Generate Docs: Generate EPUB",
+            "type": "shell",
+            "command": "docker run --rm -v ${LOCAL_WORKSPACE_FOLDER}/docs:/docs sphinxdoc/sphinx make epub",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Freeze Python Code Requirements",
+            "type": "shell",
+            "command": "pip3 freeze > ${workspaceFolderBasename}/app/requirements.txt",
+            "windows": {
+                "command": "pip3 freeze .\\app\\requirements.txt"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Pre-Commit: Run Garbage Collection",
+            "type": "shell",
+            "command": "pre-commit gc",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Pre-Commit: Clear Cache",
+            "type": "shell",
+            "command": "pre-commit clean",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Python Module Test",
+            "type": "shell",
+            "command": "pytest ${workspaceFolderBasename}/app/tests/",
+            "windows": {
+                "command": "pytest .\\app\\tests\\"
+            },
+            // Use group to show as "Test Task"
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Pytest: Current File",
+            "type": "shell",
+            "command": "${python.testing.pytestPath}",
+            "args": [
+                "${file}"
+            ],
+            // Use group to show as "Test Task"
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+}

@@ -1,33 +1,31 @@
 services:
     python:
-        image: python:3.8
+        build: .
+        container_name: "Python_3.9"
         restart: unless-stopped
         init: true
         volumes:
-            - ..:/workspace:cached
+        # You can switch between :cached and :delegated here  
+            - ..:/workspace:delegated
+        # If volume is used
+        #    - workspace-volume:/workspace
+        # Run Docker from Docker
+            - /var/run/docker.sock:/var/run/docker-host.sock
         ports: 
             - 3020:6006
             - 3021:8500
             - 3022:8501
         command: sleep infinity
-    grafana:
-        image: grafana/grafana:latest
-        restart: unless-stopped
-        volumes:
-            - ../vis:/app
-        ports:  
-            - 3023:3000
-        links: 
-            - "fastapi:api"
     fastapi:
         image: tiangolo/uvicorn-gunicorn-fastapi:python3.8
+        container_name: "FastAPI"
         restart: unless-stopped
         environment: 
             VARIABLE_NAME: api
             WORKERS_PER_CORE: 0.5
             MAX_WORKERS: 24
         volumes:
-            - ../api/code:/app
+            - ../api/src:/app
         ports:  
             - 3024:80
         links: 
@@ -36,6 +34,7 @@ services:
         command: /bin/sh -c "pip3 install --user -r requirements.txt"
     database:
         image: mysql:5.7
+        container_name: "MySQL_5.7"
         restart: unless-stopped
         environment: 
             MYSQL_DATABASE: exampledb
@@ -44,26 +43,29 @@ services:
             MYSQL_RANDOM_ROOT_PASSWORD: '1'
         volumes:
             - ../db:/var/lib/mysql
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        restart: unless-stopped
-        ports: 
-            - 3025:80
-        links: 
-            - "database:db"
-        depends_on:
-            - database
     tensorflow:
         image: jupyter/tensorflow-notebook
+        container_name: "Tensorflow"
         restart: unless-stopped
         ports: 
             - 3026:8888
             - 3027:6006
         volumes:
-            - ../code:/home/jovyan/work
+            - ../app:/home/jovyan/work
         environment:
             JUPYTER_ENABLE_LAB: "yes"
             GRANT_SUDO: "yes"
             RESTARTABLE: "yes"
         entrypoint: start-notebook.sh --NotebookApp.password='' --NotebookApp.token=''
-    
+    # swagger-editor:
+    #   image: swaggerapi/swagger-editor
+    #   container_name: "Swagger Editor"
+    #   restart: unless-stopped
+    #   ports:
+    #     - "3028:8080"
+    #   volumes:
+    #     - ../api/specs/:/tmp
+    #   environment:
+    #     - SWAGGER_FILE=/tmp/swaggei-sneaks.yaml
+# volumes:
+#     workspace-volume:

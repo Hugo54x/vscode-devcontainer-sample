@@ -1,0 +1,40 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#2c5041",
+        "activityBar.activeBorder": "#110b15",
+        "activityBar.background": "#2c5041",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#110b15",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "editorGroup.border": "#2c5041",
+        "panel.border": "#2c5041",
+        "sash.hoverBorder": "#2c5041",
+        "sideBar.border": "#2c5041",
+        "statusBar.background": "#1a2f26",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#2c5041",
+        "statusBarItem.remoteBackground": "#1a2f26",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#1a2f26",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#1a2f2699",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.remoteColor": "#1a2f26",
+    "peacock.color": "#1a2f26",
+    "jupyter.themeMatplotlibPlots": true,
+    "jupyter.generateSVGPlots": true,
+    "editor.formatOnSave": false,
+    "[python]": {
+        "editor.formatOnSave": true,
+    },
+    "[jupyter]": {
+        "editor.formatOnSave": true,
+    },
+    "[git-commit]": {
+
+    },
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+}

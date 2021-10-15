@@ -4,46 +4,87 @@
 	"name": "DataStack",
 	"dockerComposeFile": "./docker-compose.yml",
 	"service": "python",
-	"runServices": ["grafana", "fastapi", "database", "phpmyadmin", "tensorflow"],
+	"runServices": [
+		"fastapi",
+		"database",
+		"tensorflow"
+	],
 	"workspaceFolder": "/workspace",
-    //"workspaceMount": "src=../,dst=/workspace,type=bind",
-	//"shutdownAction": "stopCompose",
+	//"workspaceMount": "src=workspace-volume,dst=/workspace,type=volume",
+	"shutdownAction": "stopCompose",
 
-	// Use this environment variable if you need to bind mount your local source code into a new container.
-	//"remoteEnv": {
-	//	"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-	//},
-
-	// Set *default* container specific settings.json values on container create.
-	"settings": { 
-		"python.pythonPath": "/usr/local/bin/python",
-		"python.languageServer": "Pylance",
-		"python.linting.enabled": true,
-		"python.linting.pylintEnabled": true,
-		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
-		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-		"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
-		"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
-		"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
-		"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
-		"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
-		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
-		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
-		"terminal.integrated.shell.linux": "/bin/bash",
+	// Configure environment variables
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:/home/vscode/.local/bin",
+		"JUPYTER_PATH": "${containerEnv:JUPYTER_PATH}:${containerEnv:PATH}",
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	},
 
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"python.pythonPath": "/usr/bin/pypy3",
+		"python.languageServer": "Pylance",
+		
+		// Linting
+		"python.linting.enabled": true,
+		"python.linting.pycodestyleEnabled": false,
+		"python.linting.flake8Enabled": true,
+		"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+
+		// Formatting
+		"python.formatting.provider": "black",
+		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+		"python.formatting.blackArgs": [
+			"--line-length",
+			"79"
+		],
+
+		// Testing
+		"python.testing.unittestEnabled": false,
+		"python.testing.pytestEnabled": true,
+		"python.testing.pytestPath": "/usr/local/bin/pytest",
+		"python.testing.pytestArgs": [
+			"."
+		],
+		"python.testing.autoTestDiscoverOnSaveEnabled": true,
+
+		// Terminal
+		"python.terminal.activateEnvironment": false,
+		"terminal.integrated.defaultProfile.linux": "bash",
+		"terminal.integrated.env.linux": {
+		},
+
+		// Docker
+		// https://code.visualstudio.com/docs/containers/reference#_build-task-reference
+		"docker.commands.composeUp": "docker-compose -p ${workspaceFolderBasename} ${configurationFile} up ${detached} ${build} ${serviceList}",
+		"docker.commands.composeUpSubset": "docker-compose -p ${workspaceFolderBasename} ${configurationFile} up ${detached} ${build} --force-recreate ${serviceList}",
+	},
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.python",
-		"ms-python.vscode-pylance"
+		"ms-python.vscode-pylance",
+		"ms-toolsai.jupyter",
+		"visualstudioexptteam.vscodeintellicode",
+		"ms-azuretools.vscode-docker",
+		"davidanson.vscode-markdownlint",
+		"njpwerner.autodocstring",
+		"aaron-bond.better-comments",
+		"mhutchie.git-graph",
+		"johnpapa.vscode-peacock",
+		"coenraads.bracket-pair-colorizer-2",
+		"pkief.material-icon-theme",
+		"be5invis.toml",
+		"redhat.vscode-yaml",
 	],
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "sudo bash ./.devcontainer/scripts/postCreateCommand.sh",
+
+	// Use 'postStartCommand' to run commands after every container startup
+	// "postStartCommand": "",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	// "remoteUser": "vscode"
+	"remoteUser": "vscode"
 }
