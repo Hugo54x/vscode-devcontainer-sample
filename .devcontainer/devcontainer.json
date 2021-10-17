@@ -7,7 +7,17 @@
 	"runServices": [
 		"fastapi",
 		"database",
-		"tensorflow"
+		"tensorflow",
+		//* Apache Airflow
+		// "postgres",
+		// "redis",
+		// "flower",
+		// "airflow-init",
+		// "airflow-worker",
+		// "airflow-scheduler",
+		// "airflow-webserver",
+		// "x-airflow-common",
+		//* Apache Airflow
 	],
 	"workspaceFolder": "/workspace",
 	//"workspaceMount": "src=workspace-volume,dst=/workspace,type=volume",
