@@ -128,6 +128,17 @@ services:
             - 1880:1880
         volumes:
             - ../nodeRED:/data
+    mosqitto:
+        image: eclipse-mosquitto:latest
+        container_name: "MQTT"
+        restart: unless-stopped
+        ports:
+            - 1883:1883
+            - 9001:9001
+        volumes:
+            - ../mqtt/config:/mosquitto/config/
+            - ../mqtt/data:/mosquitto/data/
+            - ../mqtt/logs:/mosquitto/logs/
     # swagger-editor:
     #   image: swaggerapi/swagger-editor
     #   container_name: "Swagger Editor"
