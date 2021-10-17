@@ -57,6 +57,14 @@ services:
             GRANT_SUDO: "yes"
             RESTARTABLE: "yes"
         entrypoint: start-notebook.sh --NotebookApp.password='' --NotebookApp.token=''
+    nodered:
+        image: node-red:latest
+        container_name: "NodeRED"
+        restart: unless-stopped
+        ports:
+            - 1880:1880
+        volumes:
+            - ../nodeRED:/data
     # swagger-editor:
     #   image: swaggerapi/swagger-editor
     #   container_name: "Swagger Editor"
