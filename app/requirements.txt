@@ -27,3 +27,4 @@ scikit-learn
 #opencv-python
 ipywidgets
 furo
+apache-airflow
