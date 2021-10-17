@@ -58,6 +58,7 @@ services:
             RESTARTABLE: "yes"
         entrypoint: start-notebook.sh --NotebookApp.password='' --NotebookApp.token=''
     nodered:
+    # there is also a node-red:latest-minimal version availible
         image: node-red:latest
         container_name: "NodeRED"
         restart: unless-stopped
