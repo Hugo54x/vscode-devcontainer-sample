@@ -22,6 +22,18 @@
 		// "airflow-webserver",
 		// "x-airflow-common",
 		//* Apache Airflow
+		//* Elastic Search
+		//"journalbeat",
+		// "apm-server",
+		// "packetbeat",
+		// "metricbeat",
+		// "filebeat",
+		// "auditbeat",
+		// "logstash",
+		// "heartbeat",
+		// "elasticsearch",
+		// "kibana",
+		//* Elastic Search
 	],
 	"workspaceFolder": "/workspace",
 	//"workspaceMount": "src=workspace-volume,dst=/workspace,type=volume",

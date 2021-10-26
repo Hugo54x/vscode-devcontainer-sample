@@ -207,6 +207,7 @@ services:
     #   environment:
     #     - SWAGGER_FILE=/tmp/swaggei-sneaks.yaml
 # SINGLE SERVICE END
+
 # APACHE AIRFLOW BEGIN          
     postgres:
         image: postgres:13
@@ -407,153 +408,158 @@ services:
 # APACHE AIRFLOW END
 
 # ELASTIC SEARCH BEGIN
-#     kibana:
-#         #! There is no latest tag here
-#         image: docker.elastic.co/kibana/kibana:7.15.1
-#         restart: unless-stopped
-#         # Searches elastic search instance on http://localhost:9200/
-#         ports:
-#             - 5601:5601
-#         #volumes:
-#         networks:
-#             - elastic-search
-#         depends_on:
-#             - elasticsearch
-#     elasticsearch:
-#         #! There is no latest tag here
-#         image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
-#         restart: unless-stopped
-#         environment:
-#             - discovery.type=single-node
-#         ports:
-#             - 9300:9300
-#             - 9200:9200
-#         volumes:
-#             - ./elasticsearch/elasticsearch:/usr/share/elasticsearch/data
-#         networks:
-#             - elastic-search
-#     heartbeat:
-#         #! There is no latest tag here
-#         image: docker.elastic.co/beats/heartbeat:7.15.1
-#         command: --strict.perms=false -e
-#         restart: unless-stopped
-#         environment:
-#             - output.elasticsearch.hosts=["elasticsearch:9200"]
-#             - setup.kibana.host=kibana:5601
-#         #ports:
-#         volumes:
-#         # Create heartbeat.yml
-#             - ./elasticsearch/heartbeat:/usr/share/heartbeat/
-#         networks:
-#             - elastic-search
-#         depends_on:
-#             - elasticsearch
-#             - kibana
-#     logstash:
-#         #! There is no latest tag here
-#         image: docker.elastic.co/logstash/logstash:7.15.1
-#         restart: unless-stopped
-#         networks:
-#             - elastic-search
-#         depends_on:
-#             - elasticsearch
-#             - kibana
-#     auditbeat:
-#         image: docker.elastic.co/beats/auditbeat:7.15.1
-#         command: -e --strict.perms=false 
-#         cap_add: ['AUDIT_CONTROL', 'AUDIT_READ']
-#         # Auditbeat must run in the main process namespace.
-#         pid: host
-#         volumes:
-#         - ./elasticsearch/auditbeat/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
-#         networks:
-#             - elastic-search
-#         depends_on:
-#             - elasticsearch
-#             - kibana
-#     filebeat:
-#         image: docker.elastic.co/beats/filebeat:7.15.1
-#         command: --strict.perms=false -e 
-#         environment:
-#             - setup.kibana.host=kibana:5601
-#             - output.elasticsearch.hosts=["elasticsearch:9200"]
-#         # If the host system has logs at "/var/log", mount them at "/mnt/log"
-#         # inside the container, where Filebeat can find them.
-#         volumes: 
-#         #     - /var/log:/mnt/log:ro
-#             - ./elasticsearch/filebeat/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
-#         networks:
-#             - elastic-search
-#         depends_on:
-#             - elasticsearch
-#             - kibana
-#     metricbeat:
-#         image: docker.elastic.co/beats/metricbeat:7.15.1
-#         # The commented sections below enable Metricbeat to monitor the Docker host,
-#         # rather than the Metricbeat container. It's problematic with Docker for
-#         # Windows, however, since "/proc", "/sys" etc. don't exist on Windows.
-#         # The same likely applies to OSX (needs testing).
-#         # volumes:
-#         #   - /proc:/hostfs/proc:ro
-#         #   - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
-#         #   - /:/hostfs:ro
-#         command: --strict.perms=false -e
-#         volumes:
-#             - ./elasticsearch/metricbeat/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
-#         networks:
-#             - elastic-search
-#         depends_on:
-#             - elasticsearch
-#             - kibana
-#     packetbeat:
-#         image: docker.elastic.co/beats/packetbeat:7.15.1
-#         # Packetbeat needs some elevated privileges to capture network traffic.
-#         # We'll grant them with POSIX capabilities.
-#         cap_add: ['NET_RAW', 'NET_ADMIN']
-#         # Use "host mode" networking to allow Packetbeat to capture traffic from
-#         # the real network interface on the host, rather than being isolated to the
-#         # container's virtual interface.
-#         network_mode: host
-#         # Since we did that, Packetbeat is not part of the "elastic-search" Docker network
-#         # that the other containers are connected to, and thus can't resolve the
-#         # hostname "elasticsearch". Instead, we'll tell it to find Elasticsearch
-#         # on "localhost", which is the Docker host machine in this context.
-#         command: -e -E 'output.elasticsearch.hosts=["localhost:9200"]'
-#         command: --strict.perms=false -e -E output.elasticsearch.hosts="https://localhost:9200"
-#         volumes:
-#             - ./elasticsearch/packetbeat/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
-#         depends_on:
-#             - elasticsearch
-#             - kibana
-#     apm-server:
-#         image: docker.elastic.co/apm/apm-server:7.15.1
-#         ports: 
-#             - 8200:8200
-#         command: --strict.perms=false -e
-#         volumes:
-#             - ./elasticsearch/apm-server/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
-#         networks:
-#             - elastic-search
-#         depends_on:
-#             - elasticsearch
-#             - kibana
-#     journalbeat:
-#         image: docker.elastic.co/beats/journalbeat:7.15.1
-#         command: --strict.perms=false -e
-#         volumes:
-#            - ./elasticsearch/journalbeat/var/log/journal:/var/log/journal
-#            - ./elasticsearch/journalbeat/etc/machine-id:/etc/machine-id
-#            - ./elasticsearch/journalbeat/run/systemd:/run/systemd
-#            - ./elasticsearch/journalbeat/etc/hostname:/etc/hostname:ro
-#         networks:
-#             - elastic-search
-#         depends_on:
-#             - elasticsearch
-#             - kibana
+    kibana:
+        #! There is no latest tag here
+        image: docker.elastic.co/kibana/kibana:7.15.1
+        restart: unless-stopped
+        # Searches elastic search instance on http://localhost:9200/
+        ports:
+            - 5601:5601
+        #volumes:
+        networks:
+            - elastic-search
+        depends_on:
+            - elasticsearch
+    elasticsearch:
+        #! There is no latest tag here
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
+        restart: unless-stopped
+        environment:
+            - discovery.type=single-node
+        ports:
+            - 9300:9300
+            - 9200:9200
+        volumes:
+            - ../elasticsearch/elasticsearch:/usr/share/elasticsearch/data
+        networks:
+            - elastic-search
+    heartbeat:
+        #! There is no latest tag here
+        image: docker.elastic.co/beats/heartbeat:7.15.1
+        command: --strict.perms=false -e
+        restart: unless-stopped
+        environment:
+            - output.elasticsearch.hosts=["elasticsearch:9200"]
+            - setup.kibana.host=kibana:5601
+        #ports:
+        volumes:
+        # Create heartbeat.yml
+            - ../elasticsearch/heartbeat:/usr/share/heartbeat/
+        networks:
+            - elastic-search
+        depends_on:
+            - elasticsearch
+            - kibana
+    logstash:
+        #! There is no latest tag here
+        image: docker.elastic.co/logstash/logstash:7.15.1
+        restart: unless-stopped
+        networks:
+            - elastic-search
+        depends_on:
+            - elasticsearch
+            - kibana
+    auditbeat:
+        #! There is no latest tag here
+        image: docker.elastic.co/beats/auditbeat:7.15.1
+        command: -e --strict.perms=false 
+        cap_add: ['AUDIT_CONTROL', 'AUDIT_READ']
+        # Auditbeat must run in the main process namespace.
+        pid: host
+        volumes:
+            - ../elasticsearch/auditbeat/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
+        networks:
+            - elastic-search
+        depends_on:
+            - elasticsearch
+            - kibana
+    filebeat:
+        #! There is no latest tag here
+        image: docker.elastic.co/beats/filebeat:7.15.1
+        command: --strict.perms=false -e 
+        environment:
+            - setup.kibana.host=kibana:5601
+            - output.elasticsearch.hosts=["elasticsearch:9200"]
+        # If the host system has logs at "/var/log", mount them at "/mnt/log"
+        # inside the container, where Filebeat can find them.
+        volumes: 
+        #     - /var/log:/mnt/log:ro
+            - ../elasticsearch/filebeat/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
+        networks:
+            - elastic-search
+        depends_on:
+            - elasticsearch
+            - kibana
+    metricbeat:
+        #! There is no latest tag here
+        image: docker.elastic.co/beats/metricbeat:7.15.1
+        # The commented sections below enable Metricbeat to monitor the Docker host,
+        # rather than the Metricbeat container. It's problematic with Docker for
+        # Windows, however, since "/proc", "/sys" etc. don't exist on Windows.
+        # The same likely applies to OSX (needs testing).
+        # volumes:
+        #   - /proc:/hostfs/proc:ro
+        #   - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+        #   - /:/hostfs:ro
+        command: --strict.perms=false -e
+        volumes:
+            - ../elasticsearch/metricbeat/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
+        networks:
+            - elastic-search
+        depends_on:
+            - elasticsearch
+            - kibana
+    packetbeat:
+        #! There is no latest tag here
+        image: docker.elastic.co/beats/packetbeat:7.15.1
+        # Packetbeat needs some elevated privileges to capture network traffic.
+        # We'll grant them with POSIX capabilities.
+        cap_add: ['NET_RAW', 'NET_ADMIN']
+        # Use "host mode" networking to allow Packetbeat to capture traffic from
+        # the real network interface on the host, rather than being isolated to the
+        # container's virtual interface.
+        network_mode: host
+        # Since we did that, Packetbeat is not part of the "elastic-search" Docker network
+        # that the other containers are connected to, and thus can't resolve the
+        # hostname "elasticsearch". Instead, we'll tell it to find Elasticsearch
+        # on "localhost", which is the Docker host machine in this context.
+        command: -e -E 'output.elasticsearch.hosts=["localhost:9200"]' --strict.perms=false
+        volumes:
+            - ../elasticsearch/packetbeat/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
+        depends_on:
+            - elasticsearch
+            - kibana
+    apm-server:
+        #! There is no latest tag here
+        image: docker.elastic.co/apm/apm-server:7.15.1
+        ports: 
+            - 8200:8200
+        command: --strict.perms=false -e
+        volumes:
+            - ../elasticsearch/apm-server/setup-beat.sh:/usr/local/bin/setup-beat.sh:ro
+        networks:
+            - elastic-search
+        depends_on:
+            - elasticsearch
+            - kibana
+    # journalbeat:
+    #    #! There is no latest tag here
+    #     image: docker.elastic.co/beats/journalbeat:7.15.1
+    #     command: --strict.perms=false -e
+    #     volumes:
+    #        - ../elasticsearch/journalbeat/var/log/journal:/var/log/journal
+    #        - ../elasticsearch/journalbeat/etc/machine-id:/etc/machine-id
+    #        - ../elasticsearch/journalbeat/run/systemd:/run/systemd
+    #        - ../elasticsearch/journalbeat/etc/hostname:/etc/hostname:ro
+    #     networks:
+    #         - elastic-search
+    #     depends_on:
+    #         - elasticsearch
+    #         - kibana
 #
 # docker.elastic.co/observability/apm-agent-java:1.26.0
 # docker.elastic.co/app-search/app-search:7.6.2
-# ocker.elastic.co/enterprise-search/enterprise-search:7.15.1
+# docker.elastic.co/enterprise-search/enterprise-search:7.15.1
 # docker.elastic.co/beats/elastic-logging-plugin:7.15.1
 # # ELASTIC SEARCH END
 
@@ -562,6 +568,7 @@ services:
 ####################
 
 networks:
+  elastic-search:
   influxdb:
 
 ####################
