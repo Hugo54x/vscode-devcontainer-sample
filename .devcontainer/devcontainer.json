@@ -5,9 +5,13 @@
 	"dockerComposeFile": "./docker-compose.yml",
 	"service": "python",
 	"runServices": [
-		"fastapi",
-		"database",
-		"tensorflow",
+		// "fastapi",
+		// "mysql",
+		// "tensorflow",
+		// "influxdb",
+		// "mongodb",
+		// "portainer",
+		// "grafana",
 		//* Apache Airflow
 		// "postgres",
 		// "redis",

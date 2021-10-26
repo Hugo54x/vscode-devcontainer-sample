@@ -110,6 +110,15 @@ services:
             MYSQL_RANDOM_ROOT_PASSWORD: '1'
         volumes:
             - ../mysql:/var/lib/mysql
+    grafana:
+        image: grafana/grafana:latest
+        restart: unless-stopped
+        environment:
+        #    - GF_INSTALL_PLUGINS: []
+        ports:
+            - 3000:3000
+        volumes:
+            - ../grafana/:/etc/grafana/
     influxdb:
         image: influxdb:2.0
         container_name: influxdb
