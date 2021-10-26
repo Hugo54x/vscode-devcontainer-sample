@@ -206,6 +206,31 @@ services:
     #     - ../api/specs/:/tmp
     #   environment:
     #     - SWAGGER_FILE=/tmp/swaggei-sneaks.yaml
+    mailserver:
+        image: analogic/poste.io
+        restart: unless-stopped
+        hostname: mail.example.com
+        ports:
+            - 25:25
+            - 80:80
+            - 110:110
+            - 143:143
+            - 443:443
+            - 465:465
+            - 587:587
+            - 993:993
+            - 995:995
+            - 4190:4190
+        environment:
+            - TZ=Europe/Berlin
+            # - HTTPS=OFF
+            # - HTTP_PORT=8080
+            # - HTTPS_PORT=4433
+            # - DISABLE_CLAMAV=TRUE
+            # - DISABLE_RSPAMD=TRUE
+            # - DISABLE_ROUNDCUBE=TRUE
+        volumes:
+            - /mailserver/data:/data
 # SINGLE SERVICE END
 
 # APACHE AIRFLOW BEGIN          
