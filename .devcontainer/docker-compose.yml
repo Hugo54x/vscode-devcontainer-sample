@@ -110,6 +110,23 @@ services:
             MYSQL_RANDOM_ROOT_PASSWORD: '1'
         volumes:
             - ../mysql:/var/lib/mysql
+    influxdb:
+        image: influxdb:2.0
+        container_name: influxdb
+        restart: unless-stopped
+        environment: 
+            DOCKER_INFLUXDB_INIT_USERNAME: influxdb
+            DOCKER_INFLUXDB_INIT_PASSWORD: influxpass
+            DOCKER_INFLUXDB_INIT_ORG: influxorg
+            DOCKER_INFLUXDB_INIT_BUCKET: my-bucket
+            # DOCKER_INFLUXDB_INIT_RETENTION: ""
+            # DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ""
+        ports:
+            - 8086:8086
+        volumes:
+            - ../influxdb/influx:/var/lib/influxdb2
+        networks:
+            - influxdb
     portainer:
         image: portainer/portainer-ce:latest
         restart: unless-stopped
@@ -516,8 +533,8 @@ services:
 #   NETWORKS
 ####################
 
-# networks:
-#   elastic-search:
+networks:
+  influxdb:
 
 ####################
 #   VOLUMES
