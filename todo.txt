@@ -1,0 +1,17 @@
+- [ ] Configure jupyter black style formatting Task
+    -> Is it possible to install vscode jupyter extensions?
+- [ ]?? Overwrite git commit to not be quiet, to see pre commit output ??
+- [ ] Configurate Sphinx for Auto-Docs Generation
+    - Create File to Test
+    - Test HTML Generation
+    - Write Output 
+- [ ] Update .gitignore with content from my template-repo
+- [ ] dbunit testing
+- [ ] pytest
+
+
+setup of journalbeat, xpack, logging plugin, winlogbeat
+
+minio, chronograf, blackfire, wordpress
+factorio, mc pocket editon, mc vanilla
+gitlab, nextcloud, owncloud, 
