@@ -109,7 +109,17 @@ services:
             MYSQL_PASSWORD: examplepass
             MYSQL_RANDOM_ROOT_PASSWORD: '1'
         volumes:
-            - ../db:/var/lib/mysql
+    portainer:
+        image: portainer/portainer-ce:latest
+        restart: unless-stopped
+        volumes:
+            # - \\.\pipe\docker_engine:\\.\pipe\docker_engine
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ../portainer:/data
+            # - portainer-volume:/data
+        ports:
+            - 8000:8000
+            - 9443:9443
     tensorflow:
         image: jupyter/tensorflow-notebook
         restart: unless-stopped
@@ -515,3 +525,4 @@ services:
 # volumes:
 #     workspace-volume:
 #     postgres-db-volume: # APACHE AIRFLOW
+#     portainer-volume:
