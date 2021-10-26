@@ -127,6 +127,14 @@ services:
             - ../influxdb/influx:/var/lib/influxdb2
         networks:
             - influxdb
+    telegraf:
+        image: telegraf
+        container_name: telegraf
+        restart: unless-stopped
+        volumes:
+            - ../influxdb/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+        networks:
+            - influxdb
     portainer:
         image: portainer/portainer-ce:latest
         restart: unless-stopped
