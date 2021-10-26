@@ -135,6 +135,17 @@ services:
             - ../influxdb/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
         networks:
             - influxdb
+    mongodb:
+        image: mongo:5.0
+        restart: unless-stopped
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: crazyMongo
+        volumes:
+            - ../mongodb:/data/db
+            - ../mongodb/cfg:/etc/mongo
     portainer:
         image: portainer/portainer-ce:latest
         restart: unless-stopped
