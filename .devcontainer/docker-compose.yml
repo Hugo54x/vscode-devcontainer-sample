@@ -118,7 +118,7 @@ services:
         ports:
             - 3000:3000
         volumes:
-            - ../grafana/:/etc/grafana/
+            - ../grafana/:/var/lib/grafana
     influxdb:
         image: influxdb:2.0
         container_name: influxdb
